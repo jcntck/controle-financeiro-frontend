@@ -1,0 +1,24 @@
+<mat-drawer-container autosize class="container">
+  <mat-toolbar color="secondary">
+    <button mat-icon-button type="button" (click)="sidebar.toggle()">
+      <mat-icon>menu</mat-icon>
+    </button>
+    <span>Controle Financeiro</span>
+  </mat-toolbar>
+
+  <mat-drawer class="sidebar" mode="over" #sidebar>
+    <div class="sidebar-icon">
+      <mat-icon>savings</mat-icon>
+    </div>
+    <section class="sidebar-nav">
+      <a mat-button color="secondary" routerLink="/categories">
+        <mat-icon>category</mat-icon>
+        Categorias
+      </a>
+    </section>
+  </mat-drawer>
+
+  <main class="content">
+    <router-outlet></router-outlet>
+  </main>
+</mat-drawer-container>

@@ -1,0 +1,27 @@
+<h2 mat-dialog-title>
+  <span>{{ data.type === FormType.CREATE ? "Criar" : "Editar" }}</span>
+  categoria
+</h2>
+<section mat-dialog-content>
+  <form [formGroup]="categoryForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field>
+      <mat-label>Nome da categoria</mat-label>
+      <input matInput type="text" formControlName="name" required />
+      @if(name && name.invalid) {
+      <mat-error>{{ getErrorMessage("name") }}</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Cor de destaque</mat-label>
+      <input matInput type="color" formControlName="color" />
+    </mat-form-field>
+    <button
+      mat-raised-button
+      [color]="data.type === FormType.CREATE ? 'primary' : 'accent'"
+      type="submit"
+      [disabled]="categoryForm.invalid"
+    >
+      {{ data.type === FormType.CREATE ? "Criar" : "Editar" }}
+    </button>
+  </form>
+</section>
