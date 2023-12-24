@@ -1,0 +1,123 @@
+<mat-card class="resume-card">
+  <mat-card-header class="header">
+    <mat-card-title>Dezembro / 2023</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="content">
+    <section class="revenue-card">
+      <span class="label">Receita</span>
+      <span class="value">{{
+        sumTransactions(DebitTransactionTypes.REVENUE).toFixed(2)
+      }}</span>
+    </section>
+    <section class="expense-card">
+      <span class="label">Despesas</span>
+      <span class="value">{{
+        sumTransactions(DebitTransactionTypes.EXPENSE).toFixed(2)
+      }}</span>
+    </section>
+    <section class="balance-card">
+      <span class="label">Saldo</span>
+      <span class="value">{{ calcBalance().toFixed(2) }}</span>
+    </section>
+  </mat-card-content>
+</mat-card>
+
+<mat-card class="card">
+  <mat-card-header class="header">
+    <mat-card-title>Transações</mat-card-title>
+  </mat-card-header>
+  <mat-card-content class="content">
+    <mat-divider></mat-divider>
+    <section class="options">
+      <button mat-button mat-stroked-button color="secondary">
+        <mat-icon>add</mat-icon>
+        Adicionar
+      </button>
+    </section>
+
+    <section class="table-area">
+      <table mat-table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="id">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>ID</th>
+          <td mat-cell *matCellDef="let row">{{ row.id }}</td>
+        </ng-container>
+        <ng-container matColumnDef="date">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Data</th>
+          <td mat-cell *matCellDef="let row">
+            {{ row.date.toLocaleDateString() }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="description">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Descrição</th>
+          <td mat-cell *matCellDef="let row" class="desc">
+            {{ row.description }}
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="category">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Categoria</th>
+          <td mat-cell *matCellDef="let row">
+            <div class="" [style.background-color]="row.category.color">
+              <span>
+                {{ row.category.name }}
+              </span>
+            </div>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="amount">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Valor</th>
+          <td mat-cell *matCellDef="let row">
+            <span
+              [style.color]="
+                row.transactionType === DebitTransactionTypes.EXPENSE
+                  ? 'red'
+                  : 'green'
+              "
+              >{{ row.amount }}</span
+            >
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="options">
+          <th mat-header-cell *matHeaderCellDef mat-sort-header>Opções</th>
+          <td mat-cell *matCellDef="let row" [style.width]="'10rem'">
+            <button
+              mat-icon-button
+              color="accent"
+              aria-label="Edit transaction button"
+            >
+              <mat-icon>edit</mat-icon>
+            </button>
+            <button
+              mat-icon-button
+              color="warn"
+              aria-label="Delete transaction button"
+            >
+              <mat-icon>delete</mat-icon>
+            </button>
+          </td>
+        </ng-container>
+
+        <tr
+          mat-header-row
+          *matHeaderRowDef="displayedColumns; sticky: true"
+        ></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns"></tr>
+
+        <ng-template>
+          <tr class="mat-row no-data" *matNoDataRow>
+            <td class="mat-cell" [attr.colspan]="displayedColumns.length">
+              <div>
+                <mat-icon>warning</mat-icon>
+                <p>
+                  Nenhuma transação encontrada.
+                  <!-- <ng-template [ngIf]="input.value">
+                    Termo de pesquisa: {{ input.value }}
+                  </ng-template> -->
+                </p>
+              </div>
+            </td>
+          </tr>
+        </ng-template>
+      </table>
+    </section>
+  </mat-card-content>
+</mat-card>
