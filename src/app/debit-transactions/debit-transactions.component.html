@@ -29,7 +29,12 @@
   <mat-card-content class="content">
     <mat-divider></mat-divider>
     <section class="options">
-      <button mat-button mat-stroked-button color="secondary">
+      <button
+        mat-button
+        mat-stroked-button
+        color="secondary"
+        (click)="openCategoryFormDialog(FormType.CREATE)"
+      >
         <mat-icon>add</mat-icon>
         Adicionar
       </button>

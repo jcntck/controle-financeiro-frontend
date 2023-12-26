@@ -1,24 +1,25 @@
-import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { MatCardModule } from '@angular/material/card';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatDividerModule } from '@angular/material/divider';
-import { MatIconModule } from '@angular/material/icon';
+import { AfterViewInit, Component, ViewChild } from '@angular/core';
 import { MatButtonModule } from '@angular/material/button';
-import { MatPaginator, MatPaginatorModule } from '@angular/material/paginator';
+import { MatCardModule } from '@angular/material/card';
+import { MatDialog } from '@angular/material/dialog';
+import { MatDividerModule } from '@angular/material/divider';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
+import { MatInputModule } from '@angular/material/input';
+import { MatPaginatorModule } from '@angular/material/paginator';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 
 // Models
-import { Category } from '../models/category';
-import DebitTransaction, {
-  DebitTransactionTypes,
-} from '../models/debit-transaction';
+import { DebitTransactionTypes } from '../models/debit-transaction';
 
 // Temporário
 import { faker } from '@faker-js/faker';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { FormType } from '../../enum/FormType.enum';
+import { DebitTransactionFormComponent } from './dialog/form/form.component';
 
 @Component({
   selector: 'app-debit-transactions',
@@ -49,17 +50,23 @@ export class DebitTransactionsComponent implements AfterViewInit {
   ];
   dataSource: MatTableDataSource<any>;
   transactions: any[];
+
   DebitTransactionTypes = DebitTransactionTypes;
+  FormType = FormType;
 
   @ViewChild(MatSort) sort?: MatSort;
 
-  constructor() {
+  constructor(
+    private debitTransactionFormDialog: MatDialog,
+    private _snackBar: MatSnackBar
+  ) {
     this.transactions = fakerData(20);
     this.dataSource = new MatTableDataSource(this.transactions);
   }
 
   ngAfterViewInit(): void {
     this.dataSource.sort = this.sort!;
+    this.openCategoryFormDialog(FormType.CREATE);
   }
 
   sumTransactions(transactionType: DebitTransactionTypes) {
@@ -72,6 +79,20 @@ export class DebitTransactionsComponent implements AfterViewInit {
     return (
       this.sumTransactions(DebitTransactionTypes.REVENUE) -
       this.sumTransactions(DebitTransactionTypes.EXPENSE)
+    );
+  }
+
+  openCategoryFormDialog(type: FormType, transaction?: any): void {
+    const transactionFormRef = this.debitTransactionFormDialog.open(
+      DebitTransactionFormComponent,
+      {
+        data: {
+          type,
+          ...transaction,
+        },
+        height: 'auto',
+        width: '30rem',
+      }
     );
   }
 }

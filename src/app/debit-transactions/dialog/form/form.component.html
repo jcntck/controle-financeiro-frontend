@@ -1,0 +1,51 @@
+<h2 mat-dialog-title>
+  <span>{{ data.type === FormType.CREATE ? "Criar" : "Editar" }}</span>
+  transação de débito
+</h2>
+<section mat-dialog-content>
+  <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field>
+      <mat-label>Data</mat-label>
+      <input matInput type="date" formControlName="date" />
+      <!-- @if(name && name.invalid) {
+      <mat-error>{{ getErrorMessage("name") }}</mat-error>
+      } -->
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput type="text" formControlName="description" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Categoria</mat-label>
+      <input
+        type="text"
+        placeholder="Selecione uma categoria"
+        aria-label="Categoria"
+        matInput
+        formControlName="categoryName"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (category of filteredCategories | async; track category) {
+        <mat-option [value]="category.name">{{ category.name }}</mat-option>
+        }
+      </mat-autocomplete>
+    </mat-form-field>
+    <!-- <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput type="text" formControlName="description" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput type="text" formControlName="description" />
+    </mat-form-field> -->
+    <button
+      mat-raised-button
+      [color]="data.type === FormType.CREATE ? 'primary' : 'accent'"
+      type="submit"
+      [disabled]="transactionForm.invalid"
+    >
+      {{ data.type === FormType.CREATE ? "Criar" : "Editar" }}
+    </button>
+  </form>
+</section>
