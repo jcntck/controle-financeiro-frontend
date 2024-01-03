@@ -11,14 +11,17 @@ import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
+import { CurrencyMaskModule } from 'ng2-currency-mask';
 
 // Models
-import { DebitTransactionTypes } from '../models/debit-transaction';
+import DebitTransaction, {
+  DebitTransactionTypes,
+} from '../models/debit-transaction';
 
 // Temporário
-import { faker } from '@faker-js/faker';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormType } from '../../enum/FormType.enum';
+import { DebitTransactionsService } from '../services/debit-transactions.service';
 import { DebitTransactionFormComponent } from './dialog/form/form.component';
 
 @Component({
@@ -36,6 +39,7 @@ import { DebitTransactionFormComponent } from './dialog/form/form.component';
     MatInputModule,
     MatFormFieldModule,
     MatProgressSpinnerModule,
+    CurrencyMaskModule,
   ],
   templateUrl: './debit-transactions.component.html',
   styleUrl: './debit-transactions.component.scss',
@@ -49,7 +53,14 @@ export class DebitTransactionsComponent implements AfterViewInit {
     'options',
   ];
   dataSource: MatTableDataSource<any>;
-  transactions: any[];
+  transactions: any[] = [];
+  isLoading = false;
+
+  totalValues = {
+    expense: 0,
+    revenue: 0,
+    balance: 0,
+  };
 
   DebitTransactionTypes = DebitTransactionTypes;
   FormType = FormType;
@@ -58,15 +69,20 @@ export class DebitTransactionsComponent implements AfterViewInit {
 
   constructor(
     private debitTransactionFormDialog: MatDialog,
-    private _snackBar: MatSnackBar
+    private _snackBar: MatSnackBar,
+    private debitTransactionService: DebitTransactionsService
   ) {
-    this.transactions = fakerData(20);
-    this.dataSource = new MatTableDataSource(this.transactions);
+    // this.transactions = fakerData(20);
+    this.dataSource = new MatTableDataSource();
+  }
+
+  ngOnInit() {
+    this.isLoading = true;
+    this.getTransactions();
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.sort = this.sort!;
-    this.openCategoryFormDialog(FormType.CREATE);
+    // this.dataSource.sort = this.sort!;
   }
 
   sumTransactions(transactionType: DebitTransactionTypes) {
@@ -76,13 +92,30 @@ export class DebitTransactionsComponent implements AfterViewInit {
   }
 
   calcBalance() {
-    return (
-      this.sumTransactions(DebitTransactionTypes.REVENUE) -
-      this.sumTransactions(DebitTransactionTypes.EXPENSE)
+    this.totalValues.expense = this.sumTransactions(
+      DebitTransactionTypes.EXPENSE
     );
+    this.totalValues.revenue = this.sumTransactions(
+      DebitTransactionTypes.REVENUE
+    );
+    this.totalValues.balance =
+      this.totalValues.revenue - this.totalValues.expense;
+    console.log(this.totalValues);
   }
 
-  openCategoryFormDialog(type: FormType, transaction?: any): void {
+  getTransactions() {
+    this.debitTransactionService
+      .getTransactions()
+      .subscribe((transactions: DebitTransaction[]) => {
+        this.transactions = transactions;
+        this.dataSource = new MatTableDataSource(transactions);
+        this.dataSource.sort = this.sort!;
+        this.calcBalance();
+        this.isLoading = false;
+      });
+  }
+
+  openTransactionFormDialog(type: FormType, transaction?: any): void {
     const transactionFormRef = this.debitTransactionFormDialog.open(
       DebitTransactionFormComponent,
       {
@@ -94,27 +127,78 @@ export class DebitTransactionsComponent implements AfterViewInit {
         width: '30rem',
       }
     );
-  }
-}
 
-function fakerData(quantity: number): any[] {
-  let data = [];
-  for (let i = 0; i < quantity; i++) {
-    data.push({
-      id: i + 1,
-      description: faker.lorem.sentence({ min: 5, max: 10 }),
-      category: {
-        id: faker.number.int(),
-        name: faker.lorem.sentence(2),
-        color: faker.color.rgb(),
-      },
-      amount: faker.finance.amount(),
-      date: faker.date.between({
-        from: '2023-12-01T00:00:000Z',
-        to: '2023-12-31T00:00:000Z',
-      }),
-      transactionType: faker.string.fromCharacters(['E', 'R']),
+    transactionFormRef.afterClosed().subscribe((transactionData) => {
+      if (!transactionData) return;
+
+      if (type === FormType.CREATE) {
+        this.createTransaction(transactionData);
+      } else {
+        this.editTransaction(transaction!.id, transactionData);
+      }
     });
   }
-  return data;
+
+  createTransaction(transactionData: any) {
+    this.isLoading = true;
+    this.debitTransactionService.createTransaction(transactionData).subscribe(
+      () => {
+        this._snackBar.open('Transação criada com sucesso!', 'Fechar', {
+          duration: 3000,
+        });
+        this.getTransactions();
+      },
+      (error) => {
+        this._snackBar.open(error, 'Fechar', {
+          duration: 3000,
+        });
+        this.isLoading = false;
+        this.openTransactionFormDialog(FormType.CREATE, transactionData);
+      }
+    );
+  }
+
+  editTransaction(id: string, transactionData: any) {
+    this.isLoading = true;
+    this.debitTransactionService
+      .updateTransaction(id, transactionData)
+      .subscribe(
+        () => {
+          this._snackBar.open('Transação editada com sucesso!', 'Fechar', {
+            duration: 3000,
+          });
+          this.getTransactions();
+        },
+        (error) => {
+          this._snackBar.open(error, 'Fechar', {
+            duration: 3000,
+          });
+          this.isLoading = false;
+          this.openTransactionFormDialog(FormType.UPDATE, {
+            id,
+            ...transactionData,
+          });
+        }
+      );
+  }
+
+  deleteTransaction(id: string) {
+    this.isLoading = true;
+    this.debitTransactionService.deleteTransaction(id).subscribe(() => {
+      this._snackBar.open('Transação deletada com sucesso!', 'Fechar', {
+        duration: 3000,
+      });
+      this.getTransactions();
+    });
+  }
+
+  formatDate(date: string) {
+    return new Date(date).toLocaleDateString();
+  }
+
+  getBalanceColor() {
+    const { balance } = this.totalValues;
+    if (balance === 0) return '#5b5b5b';
+    return balance < 0 ? '#f44336' : '#38761d';
+  }
 }

@@ -28,7 +28,6 @@
 .sidebar-nav {
   display: flex;
   flex-direction: column;
-  margin: 1rem 0;
 }
 
 .sidebar-nav a {

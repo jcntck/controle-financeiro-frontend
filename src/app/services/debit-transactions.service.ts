@@ -1,20 +1,19 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../../environments/environment';
 import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
 } from '@angular/common/http';
-import { Injectable } from '@angular/core';
-import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-import { Category } from '../models/category';
-import { environment } from '../../environments/environment';
+import { Observable, catchError, throwError } from 'rxjs';
+import DebitTransaction from '../models/debit-transaction';
 import ServerErrorsMapper from '../../mapper/ServerErrors.mapper';
 
 @Injectable({
   providedIn: 'root',
 })
-export class CategoryService {
-  url = `${environment.apiUrl}/categories`;
+export class DebitTransactionsService {
+  url = `${environment.apiUrl}/debit-transactions`;
   httpOptions = {
     headers: new HttpHeaders({
       'Content-Type': 'application/json',
@@ -23,31 +22,25 @@ export class CategoryService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getCategories(): Observable<Category[]> {
+  getTransactions(): Observable<DebitTransaction[]> {
     return this.httpClient
-      .get<Category[]>(this.url)
+      .get<DebitTransaction[]>(this.url)
       .pipe(catchError(this.handleError));
   }
 
-  createCategory(category: {
-    name: string;
-    color: string;
-  }): Observable<number> {
+  createTransaction(transaction: any): Observable<number> {
     return this.httpClient
-      .post<number>(this.url, JSON.stringify(category), this.httpOptions)
+      .post<number>(this.url, JSON.stringify(transaction), this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  updateCategory(
-    id: string,
-    category: { name: string; color: string }
-  ): Observable<any> {
+  updateTransaction(id: string, transaction: any): Observable<any> {
     return this.httpClient
-      .put<void>(`${this.url}/${id}`, category, this.httpOptions)
+      .put<void>(`${this.url}/${id}`, transaction, this.httpOptions)
       .pipe(catchError(this.handleError));
   }
 
-  deleteCategory(id: string): Observable<void> {
+  deleteTransaction(id: string): Observable<void> {
     return this.httpClient
       .delete<void>(`${this.url}/${id}`)
       .pipe(catchError(this.handleError));

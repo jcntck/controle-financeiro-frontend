@@ -36,20 +36,20 @@
 
     .revenue-card {
       .value {
-        color: green;
+        color: #38761d;
       }
     }
 
     .expense-card {
       .value {
-        color: red;
+        color: #f44336;
       }
     }
   }
 }
 
 .card {
-  width: 80vw;
+  min-width: 60vw;
 
   .header {
     padding-bottom: 1rem;
@@ -76,6 +76,15 @@
 
       td {
         white-space: nowrap;
+      }
+
+      .badge {
+        width: 2rem;
+        border-radius: 2rem;
+        padding: 0.5rem 2rem;
+        text-align: center;
+        color: white;
+        font-weight: 400;
       }
 
       .options {

@@ -1,6 +1,9 @@
 .card {
-  width: 80vw;
-
+  margin: 2rem 0;
+  min-width: 60vw;
+  @media screen and (max-width: 768px) {
+    min-width: 80vw;
+  }
   .header {
     padding-bottom: 1rem;
   }
