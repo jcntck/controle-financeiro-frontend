@@ -1,6 +1,32 @@
 <mat-card class="resume-card">
   <mat-card-header class="header">
-    <mat-card-title>Dezembro / 2023</mat-card-title>
+    <mat-card-title>
+      <mat-form-field>
+        <mat-label>Mês selecionado</mat-label>
+        <input matInput [matDatepicker]="dp" [formControl]="selectedMonth" />
+        <mat-datepicker-toggle matIconSuffix [for]="dp"></mat-datepicker-toggle>
+        <mat-datepicker
+          #dp
+          startView="multi-year"
+          (monthSelected)="setMonthAndYear($event, dp)"
+          panelClass="example-month-picker"
+        >
+        </mat-datepicker>
+      </mat-form-field>
+    </mat-card-title>
+    <div class="button-group">
+      <button
+        mat-mini-fab
+        color="secondary"
+        (click)="resetSelectedMonth()"
+        class="resetMonth"
+      >
+        <mat-icon>today</mat-icon>
+      </button>
+      <button mat-mini-fab color="primary" (click)="selectMonth()">
+        <mat-icon>refresh</mat-icon>
+      </button>
+    </div>
   </mat-card-header>
   <mat-card-content class="content">
     <section class="revenue-card">

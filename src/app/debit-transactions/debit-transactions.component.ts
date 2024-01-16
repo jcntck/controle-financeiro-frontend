@@ -12,21 +12,58 @@ import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
 import { MatSort, MatSortModule } from '@angular/material/sort';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
 import { CurrencyMaskModule } from 'ng2-currency-mask';
+import {
+  MomentDateAdapter,
+  MAT_MOMENT_DATE_ADAPTER_OPTIONS,
+} from '@angular/material-moment-adapter';
+import {
+  DateAdapter,
+  MAT_DATE_FORMATS,
+  MAT_DATE_LOCALE,
+} from '@angular/material/core';
 
 // Models
 import DebitTransaction, {
   DebitTransactionTypes,
 } from '../models/debit-transaction';
-
-// Temporário
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormType } from '../../enum/FormType.enum';
 import { DebitTransactionsService } from '../services/debit-transactions.service';
 import { DebitTransactionFormComponent } from './dialog/form/form.component';
+import {
+  MatDatepickerModule,
+  MatDatepicker,
+} from '@angular/material/datepicker';
+import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
+
+import * as _moment from 'moment';
+import { default as _rollupMoment, Moment } from 'moment';
+
+const moment = _rollupMoment || _moment;
+
+export const MY_FORMATS = {
+  parse: {
+    dateInput: 'MM/YYYY',
+  },
+  display: {
+    dateInput: 'MM/YYYY',
+    monthYearLabel: 'MMM YYYY',
+    dateA11yLabel: 'LL',
+    monthYearA11yLabel: 'MMMM YYYY',
+  },
+};
 
 @Component({
   selector: 'app-debit-transactions',
   standalone: true,
+  providers: [
+    {
+      provide: DateAdapter,
+      useClass: MomentDateAdapter,
+      deps: [MAT_DATE_LOCALE, MAT_MOMENT_DATE_ADAPTER_OPTIONS],
+    },
+    { provide: MAT_DATE_FORMATS, useValue: MY_FORMATS },
+  ],
   imports: [
     CommonModule,
     MatTableModule,
@@ -40,6 +77,9 @@ import { DebitTransactionFormComponent } from './dialog/form/form.component';
     MatFormFieldModule,
     MatProgressSpinnerModule,
     CurrencyMaskModule,
+    MatDatepickerModule,
+    FormsModule,
+    ReactiveFormsModule,
   ],
   templateUrl: './debit-transactions.component.html',
   styleUrl: './debit-transactions.component.scss',
@@ -55,6 +95,8 @@ export class DebitTransactionsComponent implements AfterViewInit {
   dataSource: MatTableDataSource<any>;
   transactions: any[] = [];
   isLoading = false;
+  selectedMonth = new FormControl(moment());
+  options?: { from: string; to: string };
 
   totalValues = {
     expense: 0,
@@ -72,7 +114,6 @@ export class DebitTransactionsComponent implements AfterViewInit {
     private _snackBar: MatSnackBar,
     private debitTransactionService: DebitTransactionsService
   ) {
-    // this.transactions = fakerData(20);
     this.dataSource = new MatTableDataSource();
   }
 
@@ -81,9 +122,7 @@ export class DebitTransactionsComponent implements AfterViewInit {
     this.getTransactions();
   }
 
-  ngAfterViewInit(): void {
-    // this.dataSource.sort = this.sort!;
-  }
+  ngAfterViewInit(): void {}
 
   sumTransactions(transactionType: DebitTransactionTypes) {
     return this.transactions
@@ -100,12 +139,11 @@ export class DebitTransactionsComponent implements AfterViewInit {
     );
     this.totalValues.balance =
       this.totalValues.revenue - this.totalValues.expense;
-    console.log(this.totalValues);
   }
 
-  getTransactions() {
+  getTransactions(options?: any) {
     this.debitTransactionService
-      .getTransactions()
+      .getTransactions(options)
       .subscribe((transactions: DebitTransaction[]) => {
         this.transactions = transactions;
         this.dataSource = new MatTableDataSource(transactions);
@@ -146,7 +184,7 @@ export class DebitTransactionsComponent implements AfterViewInit {
         this._snackBar.open('Transação criada com sucesso!', 'Fechar', {
           duration: 3000,
         });
-        this.getTransactions();
+        this.getTransactions(this.options);
       },
       (error) => {
         this._snackBar.open(error, 'Fechar', {
@@ -167,7 +205,7 @@ export class DebitTransactionsComponent implements AfterViewInit {
           this._snackBar.open('Transação editada com sucesso!', 'Fechar', {
             duration: 3000,
           });
-          this.getTransactions();
+          this.getTransactions(this.options);
         },
         (error) => {
           this._snackBar.open(error, 'Fechar', {
@@ -188,7 +226,7 @@ export class DebitTransactionsComponent implements AfterViewInit {
       this._snackBar.open('Transação deletada com sucesso!', 'Fechar', {
         duration: 3000,
       });
-      this.getTransactions();
+      this.getTransactions(this.options);
     });
   }
 
@@ -200,5 +238,33 @@ export class DebitTransactionsComponent implements AfterViewInit {
     const { balance } = this.totalValues;
     if (balance === 0) return '#5b5b5b';
     return balance < 0 ? '#f44336' : '#38761d';
+  }
+
+  setMonthAndYear(
+    normalizedMonthAndYear: Moment,
+    datepicker: MatDatepicker<Moment>
+  ) {
+    const ctrlValue = this.selectedMonth.value ?? moment();
+    ctrlValue.month(normalizedMonthAndYear.month());
+    ctrlValue.year(normalizedMonthAndYear.year());
+    this.selectedMonth.setValue(ctrlValue);
+    datepicker.close();
+  }
+
+  selectMonth() {
+    const date = this.selectedMonth.value;
+    const month = date?.month();
+    const year = date?.year();
+    this.options = {
+      from: new Date(year!, month!, 1).toJSON(),
+      to: new Date(year!, month! + 1, 0).toJSON(),
+    };
+    this.isLoading = true;
+    this.getTransactions(this.options);
+  }
+
+  resetSelectedMonth() {
+    this.selectedMonth = new FormControl(moment());
+    this.selectMonth();
   }
 }

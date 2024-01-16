@@ -4,6 +4,7 @@ import {
   HttpClient,
   HttpErrorResponse,
   HttpHeaders,
+  HttpParams,
 } from '@angular/common/http';
 import { Observable, catchError, throwError } from 'rxjs';
 import DebitTransaction from '../models/debit-transaction';
@@ -22,9 +23,14 @@ export class DebitTransactionsService {
 
   constructor(private httpClient: HttpClient) {}
 
-  getTransactions(): Observable<DebitTransaction[]> {
+  getTransactions(options?: any): Observable<DebitTransaction[]> {
+    let params = new HttpParams();
+    if (options) {
+      params = params.append('from', options.from);
+      params = params.append('to', options.to);
+    }
     return this.httpClient
-      .get<DebitTransaction[]>(this.url)
+      .get<DebitTransaction[]>(this.url, { params })
       .pipe(catchError(this.handleError));
   }
 
