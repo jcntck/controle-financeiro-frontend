@@ -21,6 +21,7 @@ import {
   MAT_DATE_FORMATS,
   MAT_DATE_LOCALE,
 } from '@angular/material/core';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 
 // Models
 import DebitTransaction, {
@@ -38,6 +39,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
+import { ImportDataButtonComponent } from '../shared/import-data-button/import-data-button.component';
 
 const moment = _rollupMoment || _moment;
 
@@ -80,6 +82,8 @@ export const MY_FORMATS = {
     MatDatepickerModule,
     FormsModule,
     ReactiveFormsModule,
+    ImportDataButtonComponent,
+    MatProgressBarModule,
   ],
   templateUrl: './debit-transactions.component.html',
   styleUrl: './debit-transactions.component.scss',
@@ -108,6 +112,13 @@ export class DebitTransactionsComponent implements AfterViewInit {
   FormType = FormType;
 
   @ViewChild(MatSort) sort?: MatSort;
+
+  importData: any[] = [];
+  progressImportDataInformation = {
+    progressBar: 0,
+    totalRows: 0,
+    processedRows: 0,
+  };
 
   constructor(
     private debitTransactionFormDialog: MatDialog,
@@ -266,5 +277,26 @@ export class DebitTransactionsComponent implements AfterViewInit {
   resetSelectedMonth() {
     this.selectedMonth = new FormControl(moment());
     this.selectMonth();
+  }
+
+  setImportDataError(event: string) {
+    this._snackBar.open(event, 'Fechar', {
+      duration: 3000,
+    });
+  }
+
+  async setImportData(event: any) {
+    this.importData = event;
+    this.progressImportDataInformation.totalRows = this.importData.length;
+    let progress = 0;
+
+    for await (const data of this.importData) {
+      console.log(data);
+      await new Promise((r) => setTimeout(r, 2000));
+      this.progressImportDataInformation.progressBar = Math.floor(
+        (++progress / this.importData.length) * 100
+      );
+      this.progressImportDataInformation.processedRows = progress;
+    }
   }
 }

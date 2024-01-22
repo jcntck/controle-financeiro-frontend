@@ -1,3 +1,23 @@
+<section *ngIf="importData.length" class="importing-data">
+  <div class="header">
+    <mat-icon class="icon">priority_high</mat-icon>
+    <span>Importando Dados</span>
+  </div>
+  <div class="body">
+    <mat-progress-bar
+      mode="determinate"
+      [value]="progressImportDataInformation.progressBar"
+    ></mat-progress-bar>
+    <div class="description">
+      <span class="information">Importando dados ...</span>
+      <span class="progress"
+        >{{ progressImportDataInformation.processedRows }}/{{
+          progressImportDataInformation.totalRows
+        }}</span
+      >
+    </div>
+  </div>
+</section>
 <mat-card class="resume-card">
   <mat-card-header class="header">
     <mat-card-title>
@@ -30,31 +50,40 @@
   </mat-card-header>
   <mat-card-content class="content">
     <section class="revenue-card">
-      <span class="label">Receita</span>
-      <span class="value">{{
-        totalValues.revenue.toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL"
-        })
-      }}</span>
+      <mat-icon class="icon">payments</mat-icon>
+      <div class="text">
+        <span class="value">{{
+          totalValues.revenue.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL"
+          })
+        }}</span>
+        <span class="label">Receita</span>
+      </div>
     </section>
     <section class="expense-card">
-      <span class="label">Despesas</span>
-      <span class="value">{{
-        totalValues.expense.toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL"
-        })
-      }}</span>
+      <mat-icon class="icon">shopping_cart</mat-icon>
+      <div class="text">
+        <span class="value">{{
+          totalValues.expense.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL"
+          })
+        }}</span>
+        <span class="label">Despesas</span>
+      </div>
     </section>
     <section class="balance-card">
-      <span class="label">Saldo</span>
-      <span class="value" [style.color]="getBalanceColor()">{{
-        totalValues.balance.toLocaleString("pt-br", {
-          style: "currency",
-          currency: "BRL"
-        })
-      }}</span>
+      <mat-icon class="icon">account_balance_wallet</mat-icon>
+      <div class="text">
+        <span class="value" [style.color]="getBalanceColor()">{{
+          totalValues.balance.toLocaleString("pt-br", {
+            style: "currency",
+            currency: "BRL"
+          })
+        }}</span>
+        <span class="label">Saldo</span>
+      </div>
     </section>
   </mat-card-content>
 </mat-card>
@@ -75,6 +104,11 @@
         <mat-icon>add</mat-icon>
         Adicionar
       </button>
+
+      <import-data-button
+        (errorEvent)="setImportDataError($event)"
+        (dataEvent)="setImportData($event)"
+      ></import-data-button>
     </section>
 
     <section class="table-area">
