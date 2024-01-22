@@ -1,0 +1,17 @@
+<div>
+  <button
+    mat-button
+    mat-stroked-button
+    color="secondary"
+    (click)="fileUpload.click()"
+  >
+    <mat-icon>upload_file</mat-icon>
+    Importar dados
+  </button>
+  <input
+    type="file"
+    accept=".csv, application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel"
+    (change)="onFileSelected($event)"
+    #fileUpload
+  />
+</div>
