@@ -29,6 +29,8 @@ export class ImportDataButtonComponent {
       const records = this.formatData(csvRecordsArray);
       this.dataEvent.emit(records);
     };
+
+    event.target.value = null;
   }
 
   formatData(csvRecordsArray: string[]) {

@@ -34,6 +34,15 @@ export class DebitTransactionsService {
       .pipe(catchError(this.handleError));
   }
 
+  getTransactionsByExternalIds(external_ids: string[]): Observable<string[]> {
+    let params = new HttpParams();
+    params = params.append('external_ids', JSON.stringify(external_ids));
+
+    return this.httpClient
+      .get<string[]>(`${this.url}/external`, { params })
+      .pipe(catchError(this.handleError));
+  }
+
   createTransaction(transaction: any): Observable<number> {
     return this.httpClient
       .post<number>(this.url, JSON.stringify(transaction), this.httpOptions)

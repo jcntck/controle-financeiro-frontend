@@ -31,6 +31,7 @@ import { MatSnackBar } from '@angular/material/snack-bar';
 import { FormType } from '../../enum/FormType.enum';
 import { DebitTransactionsService } from '../services/debit-transactions.service';
 import { DebitTransactionFormComponent } from './dialog/form/form.component';
+import { ImportDataComponent } from './dialog/import-data/import-data.component';
 import {
   MatDatepickerModule,
   MatDatepicker,
@@ -40,6 +41,7 @@ import { FormControl, FormsModule, ReactiveFormsModule } from '@angular/forms';
 import * as _moment from 'moment';
 import { default as _rollupMoment, Moment } from 'moment';
 import { ImportDataButtonComponent } from '../shared/import-data-button/import-data-button.component';
+import { firstValueFrom, lastValueFrom } from 'rxjs';
 
 const moment = _rollupMoment || _moment;
 
@@ -115,13 +117,16 @@ export class DebitTransactionsComponent implements AfterViewInit {
 
   importData: any[] = [];
   progressImportDataInformation = {
+    isActive: false,
     progressBar: 0,
     totalRows: 0,
     processedRows: 0,
+    stepDescription: '',
   };
 
   constructor(
     private debitTransactionFormDialog: MatDialog,
+    private importDataDialog: MatDialog,
     private _snackBar: MatSnackBar,
     private debitTransactionService: DebitTransactionsService
   ) {
@@ -286,17 +291,63 @@ export class DebitTransactionsComponent implements AfterViewInit {
   }
 
   async setImportData(event: any) {
-    this.importData = event;
-    this.progressImportDataInformation.totalRows = this.importData.length;
-    let progress = 0;
+    this.progressImportDataInformation.progressBar = 0;
+    this.progressImportDataInformation.stepDescription =
+      'Lendo o arquivo enviado ...';
 
-    for await (const data of this.importData) {
-      console.log(data);
-      await new Promise((r) => setTimeout(r, 2000));
-      this.progressImportDataInformation.progressBar = Math.floor(
-        (++progress / this.importData.length) * 100
+    const transactionsIds = event.map((value: any) => value.Identificador);
+    const transactionsCreated$ =
+      this.debitTransactionService.getTransactionsByExternalIds(
+        transactionsIds
       );
-      this.progressImportDataInformation.processedRows = progress;
+    const transactionsCreated = await lastValueFrom(transactionsCreated$);
+    this.importData = event.filter(
+      ({ Identificador }: any) => !transactionsCreated.includes(Identificador)
+    );
+
+    if (!this.importData.length) {
+      this._snackBar.open(
+        'Todos as transações deste extrato já foram inseridas',
+        'Fechar',
+        {
+          duration: 3000,
+        }
+      );
+      return;
     }
+
+    this.progressImportDataInformation.isActive = true;
+    this.progressImportDataInformation.totalRows = this.importData.length;
+    this.progressImportDataInformation.stepDescription =
+      'Preparando dados para o envio ...';
+    this.openImportDataDialog(this.importData);
+  }
+
+  openImportDataDialog(importData: any) {
+    const importDataDialogRef = this.importDataDialog.open(
+      ImportDataComponent,
+      {
+        data: importData,
+      }
+    );
+
+    importDataDialogRef.afterClosed().subscribe(async (data) => {
+      let progress = 0;
+      this.progressImportDataInformation.stepDescription =
+        'Cadastrando transações ...';
+      for await (const item of data) {
+        await firstValueFrom(
+          this.debitTransactionService.createTransaction(item)
+        );
+        this.progressImportDataInformation.progressBar = Math.floor(
+          (++progress / this.importData.length) * 100
+        );
+        this.progressImportDataInformation.processedRows = progress;
+      }
+      await new Promise((r) => setTimeout(r, 2000));
+      this.progressImportDataInformation.isActive = false;
+      this.isLoading = true;
+      this.getTransactions();
+    });
   }
 }

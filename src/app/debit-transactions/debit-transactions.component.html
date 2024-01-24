@@ -1,4 +1,4 @@
-<section *ngIf="importData.length" class="importing-data">
+<section *ngIf="progressImportDataInformation.isActive" class="importing-data">
   <div class="header">
     <mat-icon class="icon">priority_high</mat-icon>
     <span>Importando Dados</span>
@@ -9,7 +9,9 @@
       [value]="progressImportDataInformation.progressBar"
     ></mat-progress-bar>
     <div class="description">
-      <span class="information">Importando dados ...</span>
+      <span class="information">{{
+        progressImportDataInformation.stepDescription
+      }}</span>
       <span class="progress"
         >{{ progressImportDataInformation.processedRows }}/{{
           progressImportDataInformation.totalRows
@@ -100,6 +102,7 @@
         mat-stroked-button
         color="secondary"
         (click)="openTransactionFormDialog(FormType.CREATE)"
+        style="margin-left: 0; margin-right: 1rem"
       >
         <mat-icon>add</mat-icon>
         Adicionar

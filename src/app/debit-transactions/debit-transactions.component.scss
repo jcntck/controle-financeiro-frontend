@@ -92,9 +92,9 @@
       }
 
       .badge {
-        width: 2rem;
+        max-width: 8rem;
         border-radius: 2rem;
-        padding: 0.5rem 2rem;
+        padding: 0.5rem 1rem;
         text-align: center;
         color: white;
         font-weight: 400;
