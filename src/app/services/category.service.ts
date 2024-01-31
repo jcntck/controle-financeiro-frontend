@@ -59,10 +59,14 @@ export class CategoryService {
       errorMessage = error.error.message;
       console.error(errorMessage);
     } else {
-      console.error(
-        `Código do erro: ${error.status}, mensagem: ${error.message}`
-      );
-      errorMessage = ServerErrorsMapper.getTranslatedMessage(error.error.error);
+      if (error.status == 0)
+        errorMessage =
+          'Não foi possível estabelecer comunicação com o servidor!';
+      else {
+        errorMessage = ServerErrorsMapper.getTranslatedMessage(
+          error.error.error
+        );
+      }
     }
     return throwError(() => errorMessage);
   }

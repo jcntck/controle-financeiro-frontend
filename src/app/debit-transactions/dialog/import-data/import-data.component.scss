@@ -1,0 +1,93 @@
+.info {
+  font-size: 0.8rem;
+}
+
+.error-section {
+  border: 1px solid #eee;
+  background-color: #bb6d67;
+  border-radius: 8px;
+  color: white;
+  padding: 1rem;
+  min-width: 60rem;
+  display: flex;
+  align-items: center;
+  margin: 1rem 0;
+
+  span {
+    margin-left: 1rem;
+  }
+}
+
+.table-area {
+  min-width: 60rem;
+  border: 1px solid #eee;
+  border-radius: 4px;
+  padding: 0.5rem;
+
+  table {
+    border-collapse: collapse;
+    border-spacing: 0;
+    table-layout: fixed;
+    width: 100%;
+
+    th {
+      height: 56px;
+      font-weight: 500;
+      color: rgba(0, 0, 0, 0.87);
+      text-align: left;
+    }
+
+    th,
+    td {
+      color: #000000de;
+      padding: 0rem 1rem;
+      font-size: 0.9rem;
+      border-collapse: collapse;
+      text-wrap: nowrap;
+    }
+
+    tr {
+      border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    }
+
+    tr:last-child {
+      border: 0;
+    }
+
+    select,
+    input {
+      color: #000000de;
+      font-size: 0.9rem;
+      padding: 0.5rem 0.8rem;
+      border: 1px solid #fbfbfb;
+      border-radius: 4px;
+      background-color: #fbfbfb;
+      width: 100%;
+    }
+
+    input:active,
+    input:focus,
+    select:active,
+    select:focus {
+      border: 1px solid #3f51b5;
+      outline: 0;
+    }
+
+    .icon {
+      font-size: 1.5rem;
+      border: 1px solid;
+      border-radius: 50%;
+      padding: 0.4rem;
+
+      &.red {
+        color: #a30b00;
+        border-color: #a30b00;
+      }
+
+      &.green {
+        color: #38761d;
+        border-color: #38761d;
+      }
+    }
+  }
+}

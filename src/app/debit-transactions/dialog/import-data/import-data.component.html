@@ -1,0 +1,79 @@
+<h2 mat-dialog-title>IMPORTAR DADOS</h2>
+<mat-dialog-content class="mat-typography">
+  <div class="info">
+    <p>
+      Revise os dados a serem importados, é possível mudar a descrição e a
+      categoria das transações.
+    </p>
+  </div>
+  <section *ngIf="error != ''" class="error-section">
+    <mat-icon>error</mat-icon>
+    <span>{{ error }}</span>
+  </section>
+  <section class="table-area">
+    <table>
+      <thead>
+        <tr>
+          <!-- <th>Id Externo</th> -->
+          <th style="width: 5rem">Data</th>
+          <th>Descrição</th>
+          <th style="width: 13rem">Categoria</th>
+          <th style="width: 5rem">Valor</th>
+          <th style="width: 8rem">Tipo da transação</th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (item of transactions; track item.external_id) {
+        <tr>
+          <!-- <td>{{ item.external_id }}</td> -->
+          <td>{{ formatDate(item.date) }}</td>
+          <td>
+            <input type="text" [formControl]="item.description" />
+          </td>
+          <td>
+            <select [formControl]="item.selectedCategory">
+              <option value="">Selecione uma categoria</option>
+              @for (category of categories; track category.id) {
+              <option [ngValue]="category.id">{{ category.name }}</option>
+              }
+            </select>
+          </td>
+          <td>
+            <span
+              [style.color]="
+                item.transactionType === 'E' ? '#a30b00' : '#38761d'
+              "
+            >
+              {{
+                item.amount.toLocaleString("pt-br", {
+                  style: "currency",
+                  currency: "BRL"
+                })
+              }}
+            </span>
+          </td>
+          <td style="text-align: center">
+            <mat-icon *ngIf="item.transactionType === 'E'" class="icon red"
+              >attach_money</mat-icon
+            >
+            <mat-icon *ngIf="item.transactionType === 'R'" class="icon green"
+              >savings</mat-icon
+            >
+          </td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </section>
+</mat-dialog-content>
+<mat-dialog-actions align="end">
+  <button mat-button mat-dialog-close>Cancel</button>
+  <button
+    mat-button
+    color="primary"
+    cdkFocusInitial
+    (click)="formatDataToSave($event)"
+  >
+    Confirmar
+  </button>
+</mat-dialog-actions>

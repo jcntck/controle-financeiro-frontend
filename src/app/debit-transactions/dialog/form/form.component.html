@@ -1,0 +1,80 @@
+<h2 mat-dialog-title>
+  <span>{{ data.type === FormType.CREATE ? "Criar" : "Editar" }}</span>
+  transação de débito
+</h2>
+<section mat-dialog-content>
+  <form [formGroup]="transactionForm" (ngSubmit)="onSubmit()" class="form">
+    <mat-form-field>
+      <mat-label>Data</mat-label>
+      <!-- <input matInput type="date" formControlName="date" /> -->
+      <input matInput [matDatepicker]="picker" formControlName="date" />
+      <mat-datepicker-toggle
+        matIconSuffix
+        [for]="picker"
+      ></mat-datepicker-toggle>
+      <mat-datepicker #picker></mat-datepicker>
+      <!-- @if(name && name.invalid) {
+      <mat-error>{{ getErrorMessage("name") }}</mat-error>
+      } -->
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Descrição</mat-label>
+      <input matInput type="text" formControlName="description" />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Categoria</mat-label>
+      <input
+        type="text"
+        placeholder="Selecione uma categoria"
+        aria-label="Categoria"
+        matInput
+        formControlName="categoryName"
+        [matAutocomplete]="auto"
+      />
+      <mat-autocomplete #auto="matAutocomplete">
+        @for (category of filteredCategories | async; track category) {
+        <mat-option [value]="category.name">{{ category.name }}</mat-option>
+        }
+      </mat-autocomplete>
+      @if (categoryName && categoryName.errors?.['notFound']) {
+      <mat-error>Categoria não cadastrada</mat-error>
+      }
+    </mat-form-field>
+    <mat-form-field floatLabel="always">
+      <mat-label>Valor</mat-label>
+      <input
+        matInput
+        type="text"
+        formControlName="amount"
+        currencyMask
+        [options]="{
+          prefix: 'R$ ',
+          thousands: '.',
+          decimal: ',',
+          align: 'left'
+        }"
+      />
+    </mat-form-field>
+    <mat-form-field>
+      <mat-label>Tipo de transação</mat-label>
+
+      <mat-select formControlName="transactionType">
+        <mat-option value="">Selecione o tipo de transação</mat-option>
+        <mat-option [value]="DebitTransactionTypes.EXPENSE">Despesa</mat-option>
+        <mat-option [value]="DebitTransactionTypes.REVENUE">Receita</mat-option>
+      </mat-select>
+    </mat-form-field>
+    <!-- <mat-form-field>
+      <mat-label>Description</mat-label>
+      <input matInput type="text" formControlName="description" />
+    </mat-form-field> -->
+    <button
+      mat-raised-button
+      [color]="data.type === FormType.CREATE ? 'primary' : 'accent'"
+      type="submit"
+      [disabled]="transactionForm.disabled || transactionForm.invalid"
+    >
+      {{ data.type === FormType.CREATE ? "Criar" : "Editar" }}
+    </button>
+  </form>
+</section>

@@ -70,8 +70,8 @@ export class CategoriesComponent implements AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.dataSource.paginator = this.paginator!;
-    this.dataSource.sort = this.sort!;
+    // this.dataSource.paginator = this.paginator!;
+    // this.dataSource.sort = this.sort!;
   }
 
   applyFilter(event: Event) {
@@ -109,6 +109,8 @@ export class CategoriesComponent implements AfterViewInit {
   getCategories() {
     this.categoryService.getCategories().subscribe((categories: Category[]) => {
       this.dataSource = new MatTableDataSource(categories);
+      this.dataSource.paginator = this.paginator!;
+      this.dataSource.sort = this.sort!;
       this.isLoading = false;
     });
   }
