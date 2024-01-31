@@ -13,7 +13,7 @@ Aplicação desenvolvida para gerir gastos pessoais e também colocar em prátic
 ## Tecnologia utilizada
 
 - Angular 17
-- Consome dados a partir de API: [API]([https://github.com/vuejs/vue](https://github.com/jcntck/controle-financeiro-backend))
+- Consome dados a partir de API: [Gestor de gastos - Back-End](https://github.com/jcntck/controle-financeiro-backend)
 
 ## Módulos
 
