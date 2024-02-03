@@ -1,8 +1,9 @@
+import Header from "@/components/Header/Header";
+import { NavbarHeightSpacingHelper } from "@/components/Header/Navbar";
+import theme from "@/theme";
+import { Box, CssBaseline, ThemeProvider } from "@mui/material";
+import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
-import "./globals.css";
-
-const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -16,7 +17,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={inter.className}>{children}</body>
+      <body>
+        <AppRouterCacheProvider options={{ enableCssLayer: true }}>
+          <ThemeProvider theme={theme}>
+            <Box sx={{ display: "flex", height: "100%", width: "100%", position: "fixed" }}>
+              <CssBaseline />
+              <Header sidebarWidth={260} />
+              <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: "grey.100" }}>
+                <NavbarHeightSpacingHelper />
+                {children}
+              </Box>
+            </Box>
+          </ThemeProvider>
+        </AppRouterCacheProvider>
+      </body>
     </html>
   );
 }
