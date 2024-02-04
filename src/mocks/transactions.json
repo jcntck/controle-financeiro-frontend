@@ -1,0 +1,222 @@
+[
+  {
+    "id": 41,
+    "date": "2024-01-01T03:00:00.000Z",
+    "amount": 652.02,
+    "description": "Pagamento de fatura - Nubank",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "6592cd8f-1e8d-49be-a1dd-b4175d0ba7a1",
+    "category_id": 4,
+    "category": { "id": 4, "name": "Cartão de Crédito", "color": "#e4cd58" }
+  },
+  {
+    "id": 42,
+    "date": "2024-01-04T03:00:00.000Z",
+    "amount": 40,
+    "description": "Borracheiro",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "6596d67a-b7f8-451b-96ea-226bf171515b",
+    "category_id": 7,
+    "category": { "id": 7, "name": "Veículo", "color": "#db005f" }
+  },
+  {
+    "id": 43,
+    "date": "2024-01-06T03:00:00.000Z",
+    "amount": 165.73,
+    "description": "CPFL",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65999079-1e6b-4de8-b11c-bb970337078a",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 44,
+    "date": "2024-01-06T03:00:00.000Z",
+    "amount": 140.2,
+    "description": "Internet - Vivo",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "659990d1-0e37-4ef3-964f-0901c9fa6638",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 45,
+    "date": "2024-01-08T03:00:00.000Z",
+    "amount": 61.61,
+    "description": "Itau 2.0",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65999142-5850-4c79-9e00-73d83f6e681b",
+    "category_id": 4,
+    "category": { "id": 4, "name": "Cartão de Crédito", "color": "#e4cd58" }
+  },
+  {
+    "id": 46,
+    "date": "2024-01-08T03:00:00.000Z",
+    "amount": 19.49,
+    "description": "Itau Extra",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "6599918d-0e71-44c9-a672-1ea562db79ed",
+    "category_id": 4,
+    "category": { "id": 4, "name": "Cartão de Crédito", "color": "#e4cd58" }
+  },
+  {
+    "id": 47,
+    "date": "2024-01-08T03:00:00.000Z",
+    "amount": 101.7,
+    "description": "OSAN PLANOS LTDA",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65999378-d80f-4376-8558-9c2c209b5117",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 48,
+    "date": "2024-01-08T03:00:00.000Z",
+    "amount": 553.24,
+    "description": "COND ED MOURAO IX",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "659993a2-81f6-4a89-9abf-d0190b75d92d",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 49,
+    "date": "2024-01-08T03:00:00.000Z",
+    "amount": 290.32,
+    "description": "IPTU - 2024",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "659993d3-dc40-4648-9340-ec35cb22b81b",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 50,
+    "date": "2024-01-08T03:00:00.000Z",
+    "amount": 52.45,
+    "description": "SANTANDER SX MASTER - 4035",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "6599956a-53b5-4ce9-97f3-426d350ff365",
+    "category_id": 4,
+    "category": { "id": 4, "name": "Cartão de Crédito", "color": "#e4cd58" }
+  },
+  {
+    "id": 51,
+    "date": "2024-01-08T03:00:00.000Z",
+    "amount": 301.2,
+    "description": "IPTU - Dívida Atrasada",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "659be54e-1ddd-44c4-bd15-03430e1df855",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 52,
+    "date": "2024-01-10T03:00:00.000Z",
+    "amount": 21.96,
+    "description": "Steam",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "659e8c73-2a93-4e93-befd-ca2b0eed8be6",
+    "category_id": 5,
+    "category": { "id": 5, "name": "Lazer", "color": "#107529" }
+  },
+  {
+    "id": 53,
+    "date": "2024-01-13T03:00:00.000Z",
+    "amount": 30,
+    "description": "Mp *Arrecadacoesavenid",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65a28e7f-41d6-4102-acec-1a890318a9ca",
+    "category_id": 8,
+    "category": { "id": 8, "name": "Doação", "color": "#84f0ee" }
+  },
+  {
+    "id": 54,
+    "date": "2024-01-14T03:00:00.000Z",
+    "amount": 150,
+    "description": "Auto Posto Novos Tempo",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65a40767-ea85-4ee7-ac39-ba7fb365c45e",
+    "category_id": 7,
+    "category": { "id": 7, "name": "Veículo", "color": "#db005f" }
+  },
+  {
+    "id": 55,
+    "date": "2024-01-15T03:00:00.000Z",
+    "amount": 868.97,
+    "description": "Salário 1/2",
+    "transactionType": "R",
+    "debited": true,
+    "external_id": "65a58cfd-8523-4ec7-9541-943644d08ed0",
+    "category_id": 3,
+    "category": { "id": 3, "name": "Salário", "color": "#03e246" }
+  },
+  {
+    "id": 56,
+    "date": "2024-01-15T03:00:00.000Z",
+    "amount": 79.99,
+    "description": "Havan Praia Grande",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65a5bc19-dfb8-4de5-83ae-decfc0f90f42",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 57,
+    "date": "2024-01-16T03:00:00.000Z",
+    "amount": 2763.72,
+    "description": "FUNDACRED - Quitação de contrato",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65a6bcf6-28b0-47a4-9cd1-e11745a51fb6",
+    "category_id": 6,
+    "category": { "id": 6, "name": "Educação", "color": "#7714c8" }
+  },
+  {
+    "id": 58,
+    "date": "2024-01-25T03:00:00.000Z",
+    "amount": 35,
+    "description": "Barbeiro",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65b28a78-de14-40f4-a92a-a14b20f3f0cc",
+    "category_id": 9,
+    "category": { "id": 9, "name": "Vestuário", "color": "#377236" }
+  },
+  {
+    "id": 59,
+    "date": "2024-01-25T03:00:00.000Z",
+    "amount": 29,
+    "description": "Guarda-chuva",
+    "transactionType": "E",
+    "debited": true,
+    "external_id": "65b28b25-3542-4ea4-81c5-b303dcf24a96",
+    "category_id": 1,
+    "category": { "id": 1, "name": "Casa", "color": "#da0707" }
+  },
+  {
+    "id": 60,
+    "date": "2024-01-30T03:00:00.000Z",
+    "amount": 2299.42,
+    "description": "Salario 2/2",
+    "transactionType": "R",
+    "debited": true,
+    "external_id": "65b8ec30-d883-4a1b-969c-5766df64a033",
+    "category_id": 3,
+    "category": { "id": 3, "name": "Salário", "color": "#03e246" }
+  }
+]
