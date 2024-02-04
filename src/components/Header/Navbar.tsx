@@ -45,6 +45,7 @@ export default function Navbar({
       color="default"
       drawerwidth={sidebarWidth}
       open={isExpanded}
+      elevation={0}
       variant="outlined"
       sx={{
         zIndex: { sm: theme.zIndex.drawer + 1 },

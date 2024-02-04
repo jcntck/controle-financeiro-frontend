@@ -4,6 +4,8 @@
 import "@fontsource/audiowide";
 
 import { createTheme } from "@mui/material/styles";
+import darkScrollbar from "@mui/material/darkScrollbar";
+import { grey } from "@mui/material/colors";
 import { Audiowide, Roboto } from "next/font/google";
 
 const roboto = Roboto({
@@ -42,6 +44,19 @@ const theme = createTheme({
       fontSize: 24,
     },
     fontFamily: roboto.style.fontFamily,
+  },
+  components: {
+    MuiCssBaseline: {
+      styleOverrides: {
+        html: {
+          ...darkScrollbar({
+            track: grey[200],
+            thumb: grey[400],
+            active: grey[400],
+          }),
+        },
+      },
+    },
   },
 });
 

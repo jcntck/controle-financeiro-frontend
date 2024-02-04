@@ -1,15 +1,14 @@
 "use client";
 
-import { Box, useMediaQuery, useTheme } from "@mui/material";
+import { useTheme } from "@mui/material";
 import { useState } from "react";
 import Navbar from "./Navbar";
 import Sidebar from "./Sidebar";
 
 export default function Header({ sidebarWidth }: { sidebarWidth: number }) {
   const theme = useTheme();
-  const isMobile = useMediaQuery(theme.breakpoints.down("sm"));
 
-  const [isExpanded, setIsExpanded] = useState(!isMobile);
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
     <>

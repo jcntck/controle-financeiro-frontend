@@ -1,5 +1,5 @@
 import Header from "@/components/Header/Header";
-import { NavbarHeightSpacingHelper } from "@/components/Header/Navbar";
+import Main from "@/components/Main";
 import theme from "@/theme";
 import { Box, CssBaseline, ThemeProvider } from "@mui/material";
 import { AppRouterCacheProvider } from "@mui/material-nextjs/v14-appRouter";
@@ -16,17 +16,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body>
+    <html lang="en" style={{ height: "100%" }}>
+      <body style={{ height: "100%" }}>
         <AppRouterCacheProvider options={{ enableCssLayer: true }}>
           <ThemeProvider theme={theme}>
-            <Box sx={{ display: "flex", height: "100%", width: "100%", position: "fixed" }}>
+            <Box sx={{ display: "flex", height: "100%", width: "100%" }}>
               <CssBaseline />
               <Header sidebarWidth={260} />
-              <Box component="main" sx={{ flexGrow: 1, p: 3, backgroundColor: "grey.100" }}>
-                <NavbarHeightSpacingHelper />
-                {children}
-              </Box>
+              <Main>{children}</Main>
             </Box>
           </ThemeProvider>
         </AppRouterCacheProvider>
