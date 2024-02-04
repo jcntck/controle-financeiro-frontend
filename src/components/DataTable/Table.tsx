@@ -1,13 +1,28 @@
-import { Paper, Table, TableBody, TableCell, TableContainer, TableFooter, TableHead, TableRow } from "@mui/material";
+import {
+  Paper,
+  Table,
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableFooter,
+  TableHead,
+  TableRow,
+} from '@mui/material';
 
 export type DataTableRow = {
   id: any;
   columns: string[];
 };
 
+export type DataTableFooter = {
+  label: string;
+  colspan: number;
+};
+
 export type DataTableItems = {
   headerColumns: string[];
   rows: DataTableRow[];
+  footerTable?: DataTableFooter[];
 };
 
 function DataTableRows({ rows }: { rows: DataTableRow[] }) {
@@ -27,33 +42,37 @@ function DataTableRows({ rows }: { rows: DataTableRow[] }) {
 }
 
 export default function DataTable({ items }: { items: DataTableItems }) {
-  const { headerColumns, rows } = items;
+  const { headerColumns, rows, footerTable } = items;
 
   return (
-    <Paper sx={{ width: "100%", scrollbarWidth: "10px" }}>
-      <TableContainer sx={{ maxHeight: "800px" }}>
+    <Paper sx={{ width: '100%', scrollbarWidth: '10px' }}>
+      <TableContainer sx={{ maxHeight: '85vh' }}>
         <Table stickyHeader aria-label="transaction table">
           <TableHead>
             <TableRow>
-              <TableCell>Data</TableCell>
-              <TableCell>Descrição</TableCell>
-              <TableCell>Categoria</TableCell>
-              <TableCell>Valor</TableCell>
-              <TableCell>Situação</TableCell>
+              {headerColumns.map((title, index) => (
+                <TableCell key={index}>{title}</TableCell>
+              ))}
               <TableCell>Opções</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             <DataTableRows rows={rows} />
           </TableBody>
-          <TableFooter sx={{ position: "sticky", insetBlockEnd: 0, backgroundColor: "white" }}>
+          <TableFooter
+            sx={{
+              position: 'sticky',
+              insetBlockEnd: 0,
+              backgroundColor: 'white',
+            }}
+          >
             <TableRow>
-              <TableCell>Receitas</TableCell>
-              <TableCell>R$ 700.00</TableCell>
-              <TableCell>Despesas</TableCell>
-              <TableCell>R$ 600.00</TableCell>
-              <TableCell>Balanço</TableCell>
-              <TableCell>R$ 100.00</TableCell>
+              {footerTable &&
+                footerTable.map((cell, index) => (
+                  <TableCell colSpan={cell.colspan} key={index}>
+                    {cell.label}
+                  </TableCell>
+                ))}
             </TableRow>
           </TableFooter>
         </Table>
@@ -61,3 +80,4 @@ export default function DataTable({ items }: { items: DataTableItems }) {
     </Paper>
   );
 }
+
